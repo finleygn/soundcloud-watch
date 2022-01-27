@@ -33,7 +33,7 @@ var runCmd = &cobra.Command{
 			return errors.New("user is not initialized")
 		}
 
-		user, err := client.GetUser("atkWGyMg57QFFAwK5c9VpC1N5Q141g7I", username)
+		user, err := client.GetUser(os.Getenv("SOUNDCLOUD_CLIENT_ID"), username)
 		if err != nil {
 			return err
 		}
@@ -104,7 +104,7 @@ var initUserCmd = &cobra.Command{
 			return errors.New("this user is already initialized")
 		}
 
-		user, err := client.GetUser("atkWGyMg57QFFAwK5c9VpC1N5Q141g7I", username)
+		user, err := client.GetUser(os.Getenv("SOUNDCLOUD_CLIENT_ID"), username)
 		if err != nil {
 			return err
 		}
