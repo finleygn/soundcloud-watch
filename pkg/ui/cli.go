@@ -41,56 +41,40 @@ func squareBracket(content string) string {
 	return colorstring.Color("[dark_gray][[reset]") + content + colorstring.Color("[dark_gray]][reset]")
 }
 
+func generateUpdates(trackIds []int, known core.KnownTracks) string {
+	out := ""
+
+	if len(trackIds) > 0 {
+		for _, id := range trackIds {
+			track := known[id]
+			id_str := fmt.Sprintf("%10d", track.Id)
+
+			// Some tracks are equal to 0
+			if id == 0 {
+				continue
+			}
+
+			out += fmt.Sprintf(
+				"%s%s %s\n",
+				squareBracket(colorstring.Color("[cyan]"+id_str)),
+				squareBracket(colorstring.Color("[yellow]"+track.User.Username)),
+				track.Title,
+			)
+		}
+	} else {
+		out += colorstring.Color("[dark_gray]No updates[reset]\n")
+	}
+
+	return out
+}
+
 func PrintState(state core.State, known core.KnownTracks) {
 	var out string
 
-	out += "\n"
-	out += colorstring.Color("[green][+ Added][reset]\n")
-
-	if len(state.Added) > 0 {
-		for _, id := range state.Added {
-			track := known[id]
-			id_str := fmt.Sprintf("%10d", track.Id)
-
-			// Some tracks are equal to 0
-			if id == 0 {
-				continue
-			}
-
-			out += fmt.Sprintf(
-				"%s%s %s\n",
-				squareBracket(colorstring.Color("[cyan]"+id_str)),
-				squareBracket(colorstring.Color("[yellow]"+track.User.Username)),
-				track.Title,
-			)
-		}
-	} else {
-		out += colorstring.Color("[dark_gray]No updates[reset]\n")
-	}
-
-	out += "\n"
-	out += colorstring.Color("[red][- Removed][reset]\n")
-
-	if len(state.Removed) > 0 {
-		for _, id := range state.Removed {
-			track := known[id]
-			id_str := fmt.Sprintf("%10d", track.Id)
-
-			// Some tracks are equal to 0
-			if id == 0 {
-				continue
-			}
-
-			out += fmt.Sprintf(
-				"%s%s %s\n",
-				squareBracket(colorstring.Color("[cyan]"+id_str)),
-				squareBracket(colorstring.Color("[yellow]"+track.User.Username)),
-				track.Title,
-			)
-		}
-	} else {
-		out += colorstring.Color("[dark_gray]No updates[reset]\n")
-	}
+	out += colorstring.Color("\n[green][+ Added][reset]\n")
+	out += generateUpdates(state.Added, known)
+	out += colorstring.Color("\n[red][- Removed][reset]\n")
+	out += generateUpdates(state.Removed, known)
 
 	fmt.Println(out)
 }
