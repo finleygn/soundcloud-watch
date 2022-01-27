@@ -71,7 +71,7 @@ func generateUpdates(trackIds []int, known core.KnownTracks) string {
 func PrintState(state core.State, known core.KnownTracks) {
 	var out string
 
-	out += colorstring.Color("\n[green][+ Added][reset]\n")
+	out += colorstring.Color("[green][+ Added][reset]\n")
 	out += generateUpdates(state.Added, known)
 	out += colorstring.Color("\n[red][- Removed][reset]\n")
 	out += generateUpdates(state.Removed, known)
@@ -79,7 +79,22 @@ func PrintState(state core.State, known core.KnownTracks) {
 	fmt.Println(out)
 }
 
+func makeStat(name string, value string) string {
+	return fmt.Sprintf(
+		"\n%s%s\n",
+		colorstring.Color("[red][yellow]"+name+"[reset]\n"),
+		value,
+	)
+}
+
 func PrintTrack(track models.Track) {
-	// TODO:
-	fmt.Println(track)
+	out := ""
+	out += colorstring.Color("[bold][green]"+track.User.Username+"[reset] ") + colorstring.Color("- [blue][bold]"+track.Title+"[reset]") + "\n"
+
+	out += makeStat("Description", track.Description)
+	out += makeStat("Artwork", track.ArtworkUrl)
+	out += makeStat("Link", track.PermalinkUrl)
+	out += makeStat("Date Created", track.CreatedAt)
+
+	fmt.Println(out)
 }
