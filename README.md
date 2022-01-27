@@ -5,7 +5,6 @@ Tool to watch for any added/removed likes from a profile.
 ## TODO:
 
 - Needs actual watcher, rather than manual runs
-- Improve song stat printout
 - Ability to get difference between two timestamps
 
 ## Usage
