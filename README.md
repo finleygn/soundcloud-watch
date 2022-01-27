@@ -1,5 +1,4 @@
 # Soundcloud Watcher
-# Soundcloud Watcher
 
 Tool to watch for any added/removed likes from a profile.
 
