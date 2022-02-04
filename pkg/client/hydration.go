@@ -20,7 +20,7 @@ func GetHydrationData(username string) (response *models.HydrationResponse, err 
 	}
 
 	if resp.StatusCode != 200 {
-		return nil, errors.New("unexpected code from SoundCloud")
+		return nil, fmt.Errorf("unexpected code from SoundCloud: %d", resp.StatusCode)
 	}
 
 	data := parser.ParseHydrationResponse(body)

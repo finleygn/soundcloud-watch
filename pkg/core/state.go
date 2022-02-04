@@ -1,6 +1,10 @@
 package core
 
-import "github.com/finleygn/soundcloud-watch/pkg/core/models"
+import (
+	"sort"
+
+	"github.com/finleygn/soundcloud-watch/pkg/core/models"
+)
 
 type State struct {
 	All     []int `json:"all"`
@@ -15,40 +19,24 @@ func TracksToIds(tracks []models.Track) []int {
 		ids = append(ids, track.Id)
 	}
 
+	sort.Ints(ids)
 	return ids
 }
 
-func contains(items []int, item int) bool {
-	for _, current := range items {
-		if current == item {
-			return true
-		}
-	}
-	return false
-}
-
-// TODO: Needs massive optimisation lmao i just wanna see it working
-
-func FindRemoved(prev []int, new []int) []int {
-	removed := []int{}
-
+// Find added and remove tracks between two lists.
+// Lists must be pre sorted.
+func Diff(prev []int, new []int) (added []int, removed []int) {
 	for _, item := range prev {
-		if !contains(new, item) {
+		if sort.SearchInts(new, item) != len(new) {
 			removed = append(removed, item)
 		}
 	}
 
-	return removed
-}
-
-func FindAdded(prev []int, new []int) []int {
-	added := []int{}
-
 	for _, item := range new {
-		if !contains(prev, item) {
-			added = append(added, item)
+		if sort.SearchInts(prev, item) != len(new) {
+			removed = append(added, item)
 		}
 	}
 
-	return added
+	return added, removed
 }

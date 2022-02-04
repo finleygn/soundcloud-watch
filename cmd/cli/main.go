@@ -58,8 +58,7 @@ var runCmd = &cobra.Command{
 
 		current_likes := core.TracksToIds(likes)
 
-		added := core.FindAdded(last_state.All, current_likes)
-		removed := core.FindRemoved(last_state.All, current_likes)
+		added, removed := core.Diff(last_state.All, current_likes)
 
 		new_state := core.State{
 			All:     current_likes,

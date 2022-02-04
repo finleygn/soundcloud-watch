@@ -1,7 +1,6 @@
 package client
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/finleygn/soundcloud-watch/pkg/client/models"
@@ -52,7 +51,7 @@ func (u *User) GetLikesFromOffset(offset string, limit int) (response *models.Li
 	}
 
 	if resp.StatusCode != 200 {
-		return nil, errors.New("unexpected code from SoundCloud")
+		return nil, fmt.Errorf("unexpected code from SoundCloud: %d", resp.StatusCode)
 	}
 
 	res := parser.ParseLikeResponse(body)
